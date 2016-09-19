@@ -9,3 +9,4 @@ df = pd.read_csv(datafile, sep = ', ', engine = 'python', index_col = False, ski
 print df.groupby(['User']).mean().nlargest(1000, ['Gigabytes'])
 print '\n'
 print df.groupby(['Date']).sum()
+print '\n'
