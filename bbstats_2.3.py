@@ -146,3 +146,5 @@ print("Exec time: %s seconds" % (time.time() - start_time))
 
 if exportexcel == '1':
     filtered.to_excel('BBreport.xlsx', 'fltered')
+
+#todo: sukurti config faila, kuriame galima nurodyti url'us, imoniu pavadinimus ir UID
