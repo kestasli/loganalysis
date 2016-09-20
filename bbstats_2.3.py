@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from datetime import timedelta
 from sys import argv
+import ConfigParser
 
 import pandas as pd
 from netaddr import IPAddress, IPNetwork
@@ -67,7 +68,10 @@ def getLogFiles(path):
 
 start_time = time.time()
 
-program, exportexcel, start, end, urlregexp = argv
+statsconfig = ConfigParser.ConfigParser()
+statsconfig.read(['config.cfg'])
+
+program, start, end = argv
 
 startdate = datetime.strptime(start, "%Y-%m-%d")
 enddate = datetime.strptime(end, "%Y-%m-%d") + timedelta(hours = 24)
@@ -120,7 +124,8 @@ clientipsubset = [ip for ip in uniqueip['IP'] if converter.isclient(ip)]
 #print clientipsubset
 
 #paliekame tik tas eilutes, kurios turi kliento IP adresa ir pasibaigia /
-filtered = ds[ds['IP'].isin(clientipsubset) & (ds['URL'].str.contains(str(urlregexp)))]
+urlfilter = statsconfig.get('filters', 'url')
+filtered = ds[ds['IP'].isin(clientipsubset) & (ds['URL'].str.contains(urlfilter))]
 
 #konvertuojame ip adresus i klientu pavadinimus
 mappedip = filtered['IP'].map(converter.get_name)
@@ -144,7 +149,7 @@ print 'Loglines: ', len(ds)
 print 'Unique IP: ', len(uniqueip['IP'])
 print("Exec time: %s seconds" % (time.time() - start_time))
 
-if exportexcel == '1':
+if statsconfig.get('export', 'toexcel') == '1':
     filtered.to_excel('BBreport.xlsx', 'fltered')
 
 #todo: sukurti config faila, kuriame galima nurodyti url'us, imoniu pavadinimus ir UID
