@@ -67,7 +67,7 @@ def getLogFiles(path):
 
 start_time = time.time()
 
-program, exportexcel, start, end = argv
+program, exportexcel, start, end, urlregexp = argv
 
 startdate = datetime.strptime(start, "%Y-%m-%d")
 enddate = datetime.strptime(end, "%Y-%m-%d") + timedelta(hours = 24)
@@ -120,7 +120,7 @@ clientipsubset = [ip for ip in uniqueip['IP'] if converter.isclient(ip)]
 #print clientipsubset
 
 #paliekame tik tas eilutes, kurios turi kliento IP adresa ir pasibaigia /
-filtered = ds[ds['IP'].isin(clientipsubset) & (ds['URL'].str.contains('/$'))]
+filtered = ds[ds['IP'].isin(clientipsubset) & (ds['URL'].str.contains(str(urlregexp)))]
 
 #konvertuojame ip adresus i klientu pavadinimus
 mappedip = filtered['IP'].map(converter.get_name)
