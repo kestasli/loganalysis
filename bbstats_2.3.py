@@ -124,14 +124,17 @@ clientipsubset = [ip for ip in uniqueip['IP'] if converter.isclient(ip)]
 #print clientipsubset
 
 #paliekame tik tas eilutes, kurios turi kliento IP adresa ir pasibaigia /
-urlfilter = statsconfig.get('filters', 'url')
-filtered = ds[ds['IP'].isin(clientipsubset) & (ds['URL'].str.contains(urlfilter))]
+filtered = ds[ds['IP'].isin(clientipsubset)]
 
 #konvertuojame ip adresus i klientu pavadinimus
 mappedip = filtered['IP'].map(converter.get_name)
 
 #pridedame column'a su klientu pavadinimais
 filtered['CLIENT'] = mappedip
+
+urlfilter = statsconfig.get('filters', 'url')
+clientfilter = statsconfig.get('filters', 'client')
+filtered = filtered[(filtered['URL'].str.contains(urlfilter)) & filtered['CLIENT'.str(clientfilter)]]
 
 #pateikiame ataskaitas
 print filtered.groupby(['CLIENT']).size().nlargest(50)
