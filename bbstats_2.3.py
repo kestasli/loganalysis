@@ -134,7 +134,11 @@ filtered['CLIENT'] = mappedip
 
 urlfilter = statsconfig.get('filters', 'url')
 clientfilter = statsconfig.get('filters', 'client')
-filtered = filtered[(filtered['URL'].str.contains(urlfilter)) & filtered['CLIENT'.str(clientfilter)]]
+uidfilter = statsconfig.get('filters', 'uid')
+
+filtered = filtered[filtered['URL'].str.contains(urlfilter) &
+                    filtered['CLIENT'].str.contains(clientfilter) &
+                    filtered['UID'].str.contains(uidfilter)]
 
 #pateikiame ataskaitas
 print filtered.groupby(['CLIENT']).size().nlargest(50)
