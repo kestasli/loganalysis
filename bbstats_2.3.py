@@ -157,6 +157,6 @@ print 'Unique IP: ', len(uniqueip['IP'])
 print("Exec time: %s seconds" % (time.time() - start_time))
 
 if statsconfig.get('export', 'toexcel') == '1':
-    filtered.to_excel('BBreport.xlsx', 'fltered')
+    filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
 
 #todo: sukurti config faila, kuriame galima nurodyti url'us, imoniu pavadinimus ir UID
