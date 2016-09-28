@@ -145,7 +145,8 @@ print filtered.groupby(['CLIENT']).size().nlargest(50)
 print '\n'
 print filtered.groupby(['URL']).size().nlargest(50)
 print '\n'
-print filtered.groupby(['CLIENT', 'URL']).size()
+group_client_url = filtered.groupby(['CLIENT', 'URL']).size()
+print group_client_url
 print '\n'
 print filtered.groupby(['CLIENT', 'UID']).size()
 print '\n'
@@ -158,5 +159,7 @@ print("Exec time: %s seconds" % (time.time() - start_time))
 
 if statsconfig.get('export', 'toexcel') == '1':
     filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
+    #pd.DataFrame(group_client_url).to_excel('whatever.xlsx', 'raw')
+    pd.DataFrame(group_client_url).to_html('whatever.html', bold_rows = False, classes = 'style.css')
 
 #todo: sukurti config faila, kuriame galima nurodyti url'us, imoniu pavadinimus ir UID
