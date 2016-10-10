@@ -66,6 +66,9 @@ def getLogFiles(path):
             logfiles.append(path + "/" + file)
     return logfiles
 
+def strip_url(url):
+    return url.split('?gclid=', 1)[0]
+
 start_time = time.time()
 
 statsconfig = ConfigParser.ConfigParser()
@@ -123,7 +126,7 @@ uniqueip = ds.drop_duplicates(subset = 'IP', keep = 'first')
 clientipsubset = [ip for ip in uniqueip['IP'] if converter.isclient(ip)]
 #print clientipsubset
 
-#paliekame tik tas eilutes, kurios turi kliento IP adresa ir pasibaigia /
+#paliekame tik tas eilutes, kurios turi kliento IP adresa
 filtered = ds[ds['IP'].isin(clientipsubset)]
 
 #konvertuojame ip adresus i klientu pavadinimus
@@ -131,6 +134,8 @@ mappedip = filtered['IP'].map(converter.get_name)
 
 #pridedame column'a su klientu pavadinimais
 filtered['CLIENT'] = mappedip
+
+filtered['URL'] = filtered['URL'].map(strip_url)
 
 urlfilter = statsconfig.get('filters', 'url')
 clientfilter = statsconfig.get('filters', 'client')
@@ -159,7 +164,11 @@ print("Exec time: %s seconds" % (time.time() - start_time))
 
 if statsconfig.get('export', 'toexcel') == '1':
     filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
+<<<<<<< Updated upstream
     #pd.DataFrame(group_client_url).to_excel('whatever.xlsx', 'raw')
     pd.DataFrame(group_client_url).to_html('whatever.html', bold_rows = False, classes = 'style.css')
+=======
+    pd.DataFrame(group_client_url).to_html('client_url.html', bold_rows = False, classes = 'table')
+>>>>>>> Stashed changes
 
 #todo: sukurti config faila, kuriame galima nurodyti url'us, imoniu pavadinimus ir UID
