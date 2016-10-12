@@ -164,11 +164,6 @@ print("Exec time: %s seconds" % (time.time() - start_time))
 
 if statsconfig.get('export', 'toexcel') == '1':
     filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
-<<<<<<< Updated upstream
     #pd.DataFrame(group_client_url).to_excel('whatever.xlsx', 'raw')
-    pd.DataFrame(group_client_url).to_html('whatever.html', bold_rows = False, classes = 'style.css')
-=======
-    pd.DataFrame(group_client_url).to_html('client_url.html', bold_rows = False, classes = 'table')
->>>>>>> Stashed changes
-
-#todo: sukurti config faila, kuriame galima nurodyti url'us, imoniu pavadinimus ir UID
+    #pd.DataFrame(group_client_url).to_html('whatever.html', bold_rows = False, classes = 'style.css')
+    #pd.DataFrame(group_client_url).to_html('client_url.html', bold_rows = False, classes = 'table')
