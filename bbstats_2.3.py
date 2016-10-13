@@ -4,6 +4,7 @@ from datetime import datetime
 from datetime import timedelta
 from sys import argv
 import ConfigParser
+import re
 
 import pandas as pd
 from netaddr import IPAddress, IPNetwork
@@ -67,7 +68,16 @@ def getLogFiles(path):
     return logfiles
 
 def strip_url(url):
-    return url.split('?gclid=', 1)[0]
+    #return url.split('?gclid=', 1)[0]
+    regexrule = '(.*?)(\?gclid=|whatever=).*?'
+    cleanurl = re.match(regexrule, url).groups()[0]
+    return cleanurl
+
+urlline = '/bond/?gclid=CLaOxvf5784CFckMcwodgg8Amw'
+
+print strip_url(urlline)
+
+exit()
 
 start_time = time.time()
 
@@ -167,3 +177,5 @@ if statsconfig.get('export', 'toexcel') == '1':
     #pd.DataFrame(group_client_url).to_excel('whatever.xlsx', 'raw')
     #pd.DataFrame(group_client_url).to_html('whatever.html', bold_rows = False, classes = 'style.css')
     #pd.DataFrame(group_client_url).to_html('client_url.html', bold_rows = False, classes = 'table')
+
+#todo: sukurti config faila, kuriame galima nurodyti url'us, imoniu pavadinimus ir UID
