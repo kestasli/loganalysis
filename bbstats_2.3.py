@@ -69,15 +69,13 @@ def getLogFiles(path):
 
 def strip_url(url):
     #return url.split('?gclid=', 1)[0]
-    regexrule = '(.*?)(\?gclid=|whatever=).*?'
-    cleanurl = re.match(regexrule, url).groups()[0]
-    return cleanurl
+    regexrule = '(.*?)(\?gclid=).*?'
 
-urlline = '/bond/?gclid=CLaOxvf5784CFckMcwodgg8Amw'
-
-print strip_url(urlline)
-
-exit()
+    try:
+        cleanurl = re.match(regexrule, url).groups()[0]
+        return cleanurl
+    except AttributeError:
+        return url
 
 start_time = time.time()
 
