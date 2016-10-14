@@ -173,7 +173,60 @@ print("Exec time: %s seconds" % (time.time() - start_time))
 if statsconfig.get('export', 'toexcel') == '1':
     filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
     #pd.DataFrame(group_client_url).to_excel('whatever.xlsx', 'raw')
-    test = pd.DataFrame(group_client_url).to_html()
-    #pd.DataFrame(group_client_url).to_html('client_url.html', bold_rows = False, classes = 'table')
+    htmltable = pd.DataFrame(group_client_url).to_html()
+    #htmltable = htmltable.replace('<table border="1" class="dataframe">',
+    #                                    '<table border="1" class="dataframe" id="newspaper-a">', 1)
 
-print test
+    #remove first malformed row
+
+    #htmltable = htmltable.replace('<tr style="text-align: right;">', '', 1)
+    #htmltable = htmltable.replace('<th></th>', '', 2)
+    #htmltable = htmltable.replace('<th>0</th>', '', 1)
+    #htmltable = htmltable.replace('</tr>', '', 1)
+
+    htmlhead = '''
+<html>
+<head>
+
+<style media="screen" type="text/css">
+
+#newspaper-a
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	margin: 45px;
+	text-align: left;
+	border-collapse: collapse;
+	border: 1px solid #69c;
+}
+#newspaper-a th
+{
+	padding: 12px 17px 12px 17px;
+	font-weight: normal;
+	font-size: 14px;
+	color: #039;
+	border-bottom: 1px dashed #69c;
+}
+#newspaper-a td
+{
+	padding: 7px 17px 7px 17px;
+	color: #669;
+}
+#newspaper-a tbody tr:hover td
+{
+	color: #339;
+	background: #d0dafd;
+}
+
+</style>
+
+</head>
+    '''
+
+    htmltail = '\n</html>'
+
+    #htmlreport = htmlhead + htmltable + htmltail
+    htmlreport = htmltable
+
+    with open("report.html", "w") as file:
+        file.write(htmlreport)
