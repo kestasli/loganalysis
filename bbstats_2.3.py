@@ -154,16 +154,16 @@ filtered = filtered[filtered['URL'].str.contains(urlfilter) &
                     filtered['UID'].str.contains(uidfilter)]
 
 #pateikiame ataskaitas
-print filtered.groupby(['CLIENT']).size().nlargest(50)
-print '\n'
-print filtered.groupby(['URL']).size().nlargest(50)
-print '\n'
+#print filtered.groupby(['CLIENT']).size().nlargest(50)
+#print '\n'
+#print filtered.groupby(['URL']).size().nlargest(50)
+#print '\n'
 group_client_url = filtered.groupby(['CLIENT', 'URL']).size()
 print group_client_url
-print '\n'
-print filtered.groupby(['CLIENT', 'UID']).size()
-print '\n'
-print filtered.groupby(['CLIENT', 'IP']).size()
+#print '\n'
+#print filtered.groupby(['CLIENT', 'UID']).size()
+#print '\n'
+#print filtered.groupby(['CLIENT', 'IP']).size()
 
 print '\n'
 print 'Loglines: ', len(ds)
@@ -173,7 +173,7 @@ print("Exec time: %s seconds" % (time.time() - start_time))
 if statsconfig.get('export', 'toexcel') == '1':
     filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
     #pd.DataFrame(group_client_url).to_excel('whatever.xlsx', 'raw')
-    #pd.DataFrame(group_client_url).to_html('whatever.html', bold_rows = False, classes = 'style.css')
+    test = pd.DataFrame(group_client_url).to_html()
     #pd.DataFrame(group_client_url).to_html('client_url.html', bold_rows = False, classes = 'table')
 
-#todo: sukurti config faila, kuriame galima nurodyti url'us, imoniu pavadinimus ir UID
+print test
