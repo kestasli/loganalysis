@@ -187,12 +187,12 @@ if statsconfig.get('export', 'tohtml') == '1':
     htmlhead = '''
     <html>
     <head>
-    <title>Lankomumo ataskaita</title>
+    <title>www.bluebridge.lt lankomumo ataskaita pagal klientus</title>
     <style media="screen" type="text/css">
     #newspaper-a
     {
         font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-        font-size: 12px;
+        font-size: 16px;
         margin: 45px;
         text-align: left;
         border-collapse: collapse;
@@ -216,11 +216,17 @@ if statsconfig.get('export', 'tohtml') == '1':
         color: #339;
         background: #d0dafd;
     }
+
+    body
+    {
+	    line-height: 1.6em;
+    }
+
     </style>
     </head>
     '''
 
-    htmldate = '<p>' + start + " " + end + '</p>'
+    htmldate = '<p>' + start + " " + end + '</p>\n'
     htmltail = '\n</html>'
     htmlreport = htmlhead + htmldate + htmltable + htmltail
 
