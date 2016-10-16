@@ -210,6 +210,7 @@ if statsconfig.get('export', 'tohtml') == '1':
     {
         padding: 7px 17px 7px 17px;
         color: #669;
+        border-bottom: 1px dashed #69c;
     }
     #newspaper-a tbody tr:hover td
     {
@@ -217,16 +218,19 @@ if statsconfig.get('export', 'tohtml') == '1':
         background: #d0dafd;
     }
 
-    body
-    {
-	    line-height: 1.6em;
-    }
+	p
+	{
+		font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+		font-size: 15px;
+		color: #669;
+		margin: 45px;
+	}
 
     </style>
     </head>
     '''
 
-    htmldate = '<p>' + start + " " + end + '</p>\n'
+    htmldate = '<p>www.bluebridge.lt lankomumas nuo ' + start + " iki " + end + '</p>\n'
     htmltail = '\n</html>'
     htmlreport = htmlhead + htmldate + htmltable + htmltail
 
