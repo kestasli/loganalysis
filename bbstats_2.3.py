@@ -88,11 +88,15 @@ def getLogFilesInterval(path, startdate, enddate):
 
     for file in filelist:
         if re.match(regex, file):
-            datecomponent = re.match(regex, file).groups()[0]
-            filedate = datetime.strptime(datecomponent, "%Y%m%d")
-            if filedate >= startdate and filedate <= enddate:
-                #print filedate[0]
+            if file == 'access.log':
                 logfiles.append(path + "/" + file)
+            else:
+                datecomponent = re.match(regex, file).groups()[0]
+                filedate = datetime.strptime(datecomponent, "%Y%m%d")
+
+                if filedate >= startdate and filedate <= enddate:
+                    #print filedate[0]
+                    logfiles.append(path + "/" + file)
 
     return logfiles
 
@@ -106,6 +110,10 @@ program, start, end = argv
 startdate = datetime.strptime(start, "%Y-%m-%d")
 enddate = datetime.strptime(end, "%Y-%m-%d") + timedelta(hours = 24)
 #enddate = datetime.strptime(end, "%Y-%m-%d")
+
+print getLogFilesInterval('logfiles', startdate, enddate)
+
+exit()
 
 pd.options.mode.chained_assignment = None
 pd.options.display.max_rows = 1000
