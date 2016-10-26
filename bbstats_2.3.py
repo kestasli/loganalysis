@@ -78,14 +78,18 @@ def strip_url(url):
         return url
 
 def getLogFilesInterval(path, startdate, enddate):
-    regex = '(\d{4}-\d{2}-\d{2})-access.log.*'
+    #regex = '(\d{4}-\d{2}-\d{2})-access.log.*'
+    regex = 'access\.log-(\d{8})|access\.log-(\d{8}).gz|access.log'
+    #access.log-20161026
+    #access.log-20161026.gz
+    #access.log
     filelist = os.listdir(path)
     logfiles = []
 
     for file in filelist:
         if re.match(regex, file):
             datecomponent = re.match(regex, file).groups()[0]
-            filedate = datetime.strptime(datecomponent, "%Y-%m-%d")
+            filedate = datetime.strptime(datecomponent, "%Y%m%d")
             if filedate >= startdate and filedate <= enddate:
                 #print filedate[0]
                 logfiles.append(path + "/" + file)
