@@ -77,6 +77,21 @@ def strip_url(url):
     except AttributeError:
         return url
 
+def getLogFilesInterval(path, startdate, enddate):
+    regex = '(\d{4}-\d{2}-\d{2})-access.log.*'
+    filelist = os.listdir(path)
+    logfiles = []
+
+    for file in filelist:
+        if re.match(regex, file):
+            datecomponent = re.match(regex, file).groups()[0]
+            filedate = datetime.strptime(datecomponent, "%Y-%m-%d")
+            if filedate >= startdate and filedate <= enddate:
+                #print filedate[0]
+                logfiles.append(path + "/" + file)
+
+    return logfiles
+
 start_time = time.time()
 
 statsconfig = ConfigParser.ConfigParser()
