@@ -111,16 +111,13 @@ startdate = datetime.strptime(start, "%Y-%m-%d")
 enddate = datetime.strptime(end, "%Y-%m-%d") + timedelta(hours = 24)
 #enddate = datetime.strptime(end, "%Y-%m-%d")
 
-print getLogFilesInterval('logfiles', startdate, enddate)
-
-exit()
-
 pd.options.mode.chained_assignment = None
 pd.options.display.max_rows = 1000
 
 regex_long = '([(\d\.)]+) - .*? \[(\d\d/.../\d{4}:\d\d:\d\d:\d\d) .*?\] +".*? (.*?) .*?" \d+ \d+ "(.*?)" "(.*?)" "(.*?)"'
 
-filelist = getLogFiles('logfiles')
+#filelist = getLogFiles('logfiles')
+filelist = getLogFilesInterval('logfiles', startdate, enddate)
 
 ds_raw = pd.DataFrame()
 
