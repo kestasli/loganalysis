@@ -172,61 +172,67 @@ print("Exec time: %s seconds" % (time.time() - start_time))
 
 if statsconfig.get('export', 'toexcel') == '1':
     filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
-    #pd.DataFrame(group_client_url).to_excel('whatever.xlsx', 'raw')
-    htmltable = pd.DataFrame(group_client_url).to_html()
-    #htmltable = htmltable.replace('<table border="1" class="dataframe">',
-    #                                    '<table border="1" class="dataframe" id="newspaper-a">', 1)
+
+if statsconfig.get('export', 'tohtml') == '1':
+    htmltable = pd.DataFrame(group_client_url).to_html(bold_rows = False)
+    htmltable = htmltable.replace('<table border="1" class="dataframe">',
+                                        '<table id="newspaper-a">', 1)
 
     #remove first malformed row
-
-    #htmltable = htmltable.replace('<tr style="text-align: right;">', '', 1)
-    #htmltable = htmltable.replace('<th></th>', '', 2)
-    #htmltable = htmltable.replace('<th>0</th>', '', 1)
-    #htmltable = htmltable.replace('</tr>', '', 1)
+    htmltable = htmltable.replace('<tr style="text-align: right;">\n', '', 1)
+    htmltable = htmltable.replace('<th></th>\n', '', 2)
+    htmltable = htmltable.replace('<th>0</th>\n', '', 1)
+    htmltable = htmltable.replace('</tr>\n', '', 1)
 
     htmlhead = '''
-<html>
-<head>
+    <html>
+    <head>
+    <title>www.bluebridge.lt lankomumo ataskaita pagal klientus</title>
+    <style media="screen" type="text/css">
+    #newspaper-a
+    {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        font-size: 16px;
+        margin: 45px;
+        text-align: left;
+        border-collapse: collapse;
+        border: 1px solid #69c;
+    }
+    #newspaper-a th
+    {
+        padding: 12px 17px 12px 17px;
+        font-weight: normal;
+        font-size: 14px;
+        color: #039;
+        border-bottom: 1px dashed #69c;
+    }
+    #newspaper-a td
+    {
+        padding: 7px 17px 7px 17px;
+        color: #669;
+        border-bottom: 1px dashed #69c;
+    }
+    #newspaper-a tbody tr:hover td
+    {
+        color: #339;
+        background: #d0dafd;
+    }
 
-<style media="screen" type="text/css">
+	p
+	{
+		font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+		font-size: 15px;
+		color: #669;
+		margin: 45px;
+	}
 
-#newspaper-a
-{
-	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-	font-size: 12px;
-	margin: 45px;
-	text-align: left;
-	border-collapse: collapse;
-	border: 1px solid #69c;
-}
-#newspaper-a th
-{
-	padding: 12px 17px 12px 17px;
-	font-weight: normal;
-	font-size: 14px;
-	color: #039;
-	border-bottom: 1px dashed #69c;
-}
-#newspaper-a td
-{
-	padding: 7px 17px 7px 17px;
-	color: #669;
-}
-#newspaper-a tbody tr:hover td
-{
-	color: #339;
-	background: #d0dafd;
-}
-
-</style>
-
-</head>
+    </style>
+    </head>
     '''
 
+    htmldate = '<p>www.bluebridge.lt lankomumas nuo ' + start + " iki " + end + '</p>\n'
     htmltail = '\n</html>'
+    htmlreport = htmlhead + htmldate + htmltable + htmltail
 
-    #htmlreport = htmlhead + htmltable + htmltail
-    htmlreport = htmltable
-
-    with open("report.html", "w") as file:
+    with open("report_" + start + " " + end + ".html", "w") as file:
         file.write(htmlreport)
