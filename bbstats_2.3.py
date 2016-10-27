@@ -77,6 +77,29 @@ def strip_url(url):
     except AttributeError:
         return url
 
+def getLogFilesInterval(path, startdate, enddate):
+    #regex = '(\d{4}-\d{2}-\d{2})-access.log.*'
+    regex = 'access\.log-(\d{8})|access\.log-(\d{8}).gz|access.log'
+    #access.log-20161026
+    #access.log-20161026.gz
+    #access.log
+    filelist = os.listdir(path)
+    logfiles = []
+
+    for file in filelist:
+        if re.match(regex, file):
+            if file == 'access.log':
+                logfiles.append(path + "/" + file)
+            else:
+                datecomponent = re.match(regex, file).groups()[0]
+                filedate = datetime.strptime(datecomponent, "%Y%m%d")
+
+                if filedate >= startdate and filedate <= enddate:
+                    #print filedate[0]
+                    logfiles.append(path + "/" + file)
+
+    return logfiles
+
 start_time = time.time()
 
 statsconfig = ConfigParser.ConfigParser()
@@ -87,6 +110,10 @@ program, start, end = argv
 startdate = datetime.strptime(start, "%Y-%m-%d")
 enddate = datetime.strptime(end, "%Y-%m-%d") + timedelta(hours = 24)
 #enddate = datetime.strptime(end, "%Y-%m-%d")
+
+print getLogFilesInterval('logfiles', startdate, enddate)
+
+exit()
 
 pd.options.mode.chained_assignment = None
 pd.options.display.max_rows = 1000
