@@ -184,8 +184,8 @@ filtered = filtered[filtered['URL'].str.contains(urlfilter) &
 #print '\n'
 group_client_url = filtered.groupby(['CLIENT', 'URL']).size()
 print group_client_url
-#print '\n'
-#print filtered.groupby(['CLIENT', 'UID']).size()
+print '\n'
+print filtered.groupby(['CLIENT', 'UID']).size()
 #print '\n'
 #print filtered.groupby(['CLIENT', 'IP']).size()
 
