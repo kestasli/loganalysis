@@ -182,10 +182,19 @@ filtered = filtered[filtered['URL'].str.contains(urlfilter) &
 #print '\n'
 #print filtered.groupby(['URL']).size().nlargest(50)
 #print '\n'
-group_client_url = filtered.groupby(['CLIENT', 'URL']).size()
+
+#group_client_url = filtered.groupby(['CLIENT', 'URL']).size()
+#print group_client_url
+
+group_client_url = filtered.groupby(['CLIENT', 'URL'], as_index = True).size()
+group_client_url.name = 'HITS'
+#group_client_url = group_client_url.reset_index()
+group_client_url['TOPTHITS'] = group_client_url.groupby('CLIENT', as_index = True)['HITS'].transform('sum')
+
 print group_client_url
-print '\n'
-print filtered.groupby(['CLIENT', 'UID']).size()
+
+#print '\n'
+#print filtered.groupby(['CLIENT', 'UID']).size()
 #print '\n'
 #print filtered.groupby(['CLIENT', 'IP']).size()
 
