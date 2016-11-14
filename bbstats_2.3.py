@@ -178,25 +178,14 @@ filtered = filtered[filtered['URL'].str.contains(urlfilter) &
                     filtered['UID'].str.contains(uidfilter)]
 
 #pateikiame ataskaitas
-#print filtered.groupby(['CLIENT']).size().nlargest(50)
-#print '\n'
-#print filtered.groupby(['URL']).size().nlargest(50)
-#print '\n'
 
-#group_client_url = filtered.groupby(['CLIENT', 'URL']).size()
-#print group_client_url
-
-group_client_url = filtered.groupby(['CLIENT', 'URL'], as_index = True).size()
+group_client_url = filtered.groupby(['CLIENT', 'URL'], as_index = False).size()
 group_client_url.name = 'HITS'
-#group_client_url = group_client_url.reset_index()
-group_client_url['TOPTHITS'] = group_client_url.groupby('CLIENT', as_index = True)['HITS'].transform('sum')
-
-print group_client_url
-
-#print '\n'
-#print filtered.groupby(['CLIENT', 'UID']).size()
-#print '\n'
-#print filtered.groupby(['CLIENT', 'IP']).size()
+group_client_url = group_client_url.reset_index()
+group_client_url['TOPHITS'] = group_client_url.groupby(['CLIENT'])['HITS'].transform('sum')
+print type(group_client_url)
+group_client_url = group_client_url.sort_values('TOPHITS', ascending=False)
+print group_client_url.to_string(columns=['CLIENT', 'URL', 'HITS'], index = False, justify = 'left')
 
 print '\n'
 print 'Loglines: ', len(ds)
@@ -207,15 +196,9 @@ if statsconfig.get('export', 'toexcel') == '1':
     filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
 
 if statsconfig.get('export', 'tohtml') == '1':
-    htmltable = pd.DataFrame(group_client_url).to_html(bold_rows = False)
+    htmltable = group_client_url.to_html(columns=['CLIENT', 'URL', 'HITS'], index = False, justify = 'left')
     htmltable = htmltable.replace('<table border="1" class="dataframe">',
                                         '<table id="newspaper-a">', 1)
-
-    #remove first malformed row
-    htmltable = htmltable.replace('<tr style="text-align: right;">\n', '', 1)
-    htmltable = htmltable.replace('<th></th>\n', '', 2)
-    htmltable = htmltable.replace('<th>0</th>\n', '', 1)
-    htmltable = htmltable.replace('</tr>\n', '', 1)
 
     htmlhead = '''
     <html>
@@ -266,6 +249,5 @@ if statsconfig.get('export', 'tohtml') == '1':
     htmldate = '<p>www.bluebridge.lt lankomumas nuo ' + start + " iki " + end + '</p>\n'
     htmltail = '\n</html>'
     htmlreport = htmlhead + htmldate + htmltable + htmltail
-
     with open("report_" + start + " " + end + ".html", "w") as file:
         file.write(htmlreport)
