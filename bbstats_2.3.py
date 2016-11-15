@@ -183,7 +183,6 @@ group_client_url = filtered.groupby(['CLIENT', 'URL'], as_index = False).size()
 group_client_url.name = 'HITS'
 group_client_url = group_client_url.reset_index()
 group_client_url['TOPHITS'] = group_client_url.groupby(['CLIENT'])['HITS'].transform('sum')
-print type(group_client_url)
 group_client_url = group_client_url.sort_values('TOPHITS', ascending=False)
 print group_client_url.to_string(columns=['CLIENT', 'URL', 'HITS'], index = False, justify = 'left')
 
