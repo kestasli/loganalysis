@@ -113,6 +113,7 @@ enddate = datetime.strptime(end, "%Y-%m-%d") + timedelta(hours = 24)
 
 pd.options.mode.chained_assignment = None
 #pd.options.display.max_rows = 1000
+pd.set_option('display.max_colwidth', -1)
 
 regex_long = '([(\d\.)]+) - .*? \[(\d\d/.../\d{4}:\d\d:\d\d:\d\d) .*?\] +".*? (.*?) .*?" \d+ \d+ "(.*?)" "(.*?)" "(.*?)"'
 
