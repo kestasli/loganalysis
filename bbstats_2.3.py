@@ -184,7 +184,7 @@ group_client_url = filtered.groupby(['CLIENT', 'URL'], as_index = False).size()
 group_client_url.name = 'HITS'
 group_client_url = group_client_url.reset_index()
 group_client_url['TOPHITS'] = group_client_url.groupby(['CLIENT'])['HITS'].transform('sum')
-group_client_url = group_client_url.sort_values(['TOPHITS', 'HITS'], ascending=[False, False])
+group_client_url = group_client_url.sort_values(['TOPHITS', 'CLIENT', 'HITS'], ascending=[False, True, False])
 print group_client_url.to_string(columns=['CLIENT', 'URL', 'HITS'], index = False, justify = 'left')
 
 print '\n'
@@ -234,13 +234,13 @@ if statsconfig.get('export', 'tohtml') == '1':
         background: #d0dafd;
     }
 
-	p
-	{
-		font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-		font-size: 15px;
-		color: #669;
-		margin: 45px;
-	}
+    p
+    {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        font-size: 15px;
+        color: #669;
+        margin: 45px;
+    }
 
     </style>
     </head>
