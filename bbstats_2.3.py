@@ -234,13 +234,13 @@ if statsconfig.get('export', 'tohtml') == '1':
         background: #d0dafd;
     }
 
-	p
-	{
-		font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-		font-size: 15px;
-		color: #669;
-		margin: 45px;
-	}
+    p
+    {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        font-size: 15px;
+        color: #669;
+        margin: 45px;
+    }
 
     </style>
     </head>
