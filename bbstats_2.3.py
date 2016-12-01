@@ -193,7 +193,7 @@ print 'Unique IP: ', len(uniqueip['IP'])
 print("Exec time: %s seconds" % (time.time() - start_time))
 
 if statsconfig.get('export', 'toexcel') == '1':
-    filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw')
+    filtered.to_excel(statsconfig.get('export', 'excelname'), 'raw', columns=['DATETIME', 'CLIENT', 'URL'], index = False,)
 
 if statsconfig.get('export', 'tohtml') == '1':
     htmltable = group_client_url.to_html(columns=['CLIENT', 'URL', 'HITS'], index = False, justify = 'left')
